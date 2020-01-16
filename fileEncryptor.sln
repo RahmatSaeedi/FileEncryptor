@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "folderEncryptor", "folderEncryptor\folderEncryptor.csproj", "{E7ACEB9D-59DB-4FA9-9F54-D0A7EC1FC9DF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fileEncryptor", "fileEncryptor\fileEncryptor.csproj", "{E7ACEB9D-59DB-4FA9-9F54-D0A7EC1FC9DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

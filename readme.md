@@ -2,7 +2,11 @@
 هر پرونده ای  را با (رمزگذاری پیشرفته استاندارد 256) رمزگذاری کنید، و  فایل ها و پوشه ها را در یک پرونده (زیپ فایل) فشرده سازید.
 
 
-برنامه به [.NET Core 3.1.0](https://dotnet.microsoft.com/download) یا بالاتر نیاز دارد. [فایل های exe](https://github.com/RahmatSaeedi/FileEncryptor/releases/) برای این برنامه در بخش انتشار موجود است.
+برنامه به دات نت کور۳.۱.۰ یا بالاتر نیاز دارد. فایل های این برنامه در بخش انتشار موجود است
+
+
+[دات نت کور۳.۱.۰](https://dotnet.microsoft.com/download)
+[بخش انتشار](https://github.com/RahmatSaeedi/FileEncryptor/releases/)
 
 ## fileEncryptor
 This WPF application can encrypt / decrypt files using AES 256, and it is also able to zip files and folders.

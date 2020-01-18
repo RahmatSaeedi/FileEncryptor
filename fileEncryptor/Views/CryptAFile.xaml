@@ -39,5 +39,8 @@
         <Border Margin="0,190,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
             <Button x:Name="btnEncryptDecrypt" Style="{StaticResource generalButton}"  VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="85" FontSize="16" Content="شروع کنید" Click="btnEncryptDecrypt_Click"/>
         </Border>
+        <Border Margin="0,250,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <TextBlock x:Name="tbStatusUpdate" FlowDirection="RightToLeft" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="14" MinWidth="2"/>
+        </Border>
     </Grid>
 </UserControl>

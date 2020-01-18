@@ -36,45 +36,48 @@ namespace fileEncryptor.Views
             if (openFileDialog.ShowDialog() == true)
             {
                 tbFilePath.Text = openFileDialog.FileName.ToString();
+                if (tbStatusUpdate != null)
+                {
+                    tbStatusUpdate.Text = string.Empty;
+                }
             }
         }
 
         private void rbEncrypt_Checked(object sender, RoutedEventArgs e)
         {
-            rbDecrypt.IsChecked = false;
+            if (tbStatusUpdate != null)
+            {
+                tbStatusUpdate.Text = string.Empty;
+            }
         }
 
         private void rbDencrypt_Checked(object sender, RoutedEventArgs e)
         {
-            rbEncrypt.IsChecked = false;
+            if(tbStatusUpdate != null)
+            {
+                tbStatusUpdate.Text = string.Empty;
+            }
         }
 
         private void btnEncryptDecrypt_Click(object sender, RoutedEventArgs e)
         {
             if (!File.Exists(tbFilePath.Text))
             {
-                MessageBox.Show(".پرونده یافت نشد");
+                MessageBox.Show("پرونده یافت نشد", "پیام", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 return;
             }
 
             if (String.IsNullOrEmpty(pwbPassword.Password))
             {
-                MessageBox.Show(".رمز عبور خالی است. لطفاً یک رمز عبور انتخاب کنید");
+                MessageBox.Show("رمز عبور خالی است. لطفاً یک رمز عبور انتخاب کنید", "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 return;
             }
             if (String.IsNullOrEmpty(pwbInitializationVector.Password))
             {
-                MessageBox.Show(".رمز عبور حامل اولیه خالی است. لطفاً یک رمز عبور منحصر به فرد انتخاب کنید");
+                MessageBox.Show("رمز عبور حامل اولیه خالی است. لطفاً یک رمز عبور منحصر به فرد انتخاب کنید", "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 return;
             }
 
-            AesCryptoServiceProvider aesProvider = new AesCryptoServiceProvider();
-            aesProvider.BlockSize = 128;
-            aesProvider.KeySize = 256;
-            aesProvider.IV = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pwbInitializationVector.Password)).Take(16).ToArray();
-            aesProvider.Key = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pwbPassword.Password));
-            aesProvider.Mode = CipherMode.CBC;
-            aesProvider.Padding = PaddingMode.PKCS7;
 
 
             byte[] fileContent;
@@ -84,50 +87,152 @@ namespace fileEncryptor.Views
             }
             catch
             {
-                MessageBox.Show(".پرونده ممکن است در حال استفاده باشد. برنامه ای را که از آن استفاده می کند ببندید و دوباره امتحان کنید");
+                MessageBox.Show("پرونده ممکن است در حال استفاده باشد. برنامه ای را که از آن استفاده می کند ببندید و دوباره امتحان کنید", "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                 return;
             }
 
-            byte[] resultantBytes;
             if (rbEncrypt.IsChecked == true)
             {
-                ICryptoTransform transform = aesProvider.CreateEncryptor(aesProvider.Key, aesProvider.IV);
-                resultantBytes = transform.TransformFinalBlock(fileContent, 0, fileContent.Length);
-
+                System.Threading.Thread encryptThread = new System.Threading.Thread(() => {
+                    aesEncrypt();
+                });
+                encryptThread.Start();
             }
             else if (rbDecrypt.IsChecked == true)
             {
-                ICryptoTransform transform = aesProvider.CreateDecryptor(aesProvider.Key, aesProvider.IV);
+                System.Threading.Thread  decryptThread= new System.Threading.Thread(() => {
+                    aesDecrypt();
+                });
+                decryptThread.Start();
+            }
+            else
+            {
+                MessageBox.Show("لطفاً گزینه ای را برای رمزگذاری یا رمزگشایی انتخاب کنید", "پیام", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                return;
+            }
+        }
+
+        void aesEncrypt()
+        {
+            this.Dispatcher.Invoke(() =>
+            {
+                byte[] fileContent;
                 try
                 {
-                    resultantBytes = transform.TransformFinalBlock(fileContent, 0, fileContent.Length);
+                    tbStatusUpdate.Text = "در حال خواندن پرونده هستیم.";
+                    fileContent = File.ReadAllBytes(tbFilePath.Text);
+                    tbStatusUpdate.Text = "پرونده خوانده شد.";
                 }
                 catch
                 {
-                    MessageBox.Show(".آیا مطمئن هستید که این پرونده درست است؟ اندازه پرونده مطابقت ندارد یا پرونده خراب شده است");
+                    MessageBox.Show("پرونده ممکن است در حال استفاده باشد. برنامه ای را که از آن استفاده می کند ببندید و دوباره امتحان کنید", "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
                     return;
                 }
-            }
-            else
-            {
-                MessageBox.Show(".لطفاً گزینه ای را برای رمزگذاری یا رمزگشایی انتخاب کنید");
-                return;
-            }
 
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            string fileExtension = System.IO.Path.GetExtension(tbFilePath.Text);
-            saveFileDialog.Filter = $"فایل ها (*{fileExtension}) | *{fileExtension}";
+                AesCryptoServiceProvider aesProvider = new AesCryptoServiceProvider();
+                aesProvider.BlockSize = 128;
+                aesProvider.KeySize = 256;
 
-            if (saveFileDialog.ShowDialog() == true)
+
+
+                aesProvider.IV = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pwbInitializationVector.Password)).Take(16).ToArray();
+                aesProvider.Key = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pwbPassword.Password));
+                aesProvider.Mode = CipherMode.CBC;
+                aesProvider.Padding = PaddingMode.PKCS7;
+
+                byte[] resultantBytes;
+                ICryptoTransform transform = aesProvider.CreateEncryptor(aesProvider.Key, aesProvider.IV);
+                try
+                {
+                    
+                    tbStatusUpdate.Text = "پرونده در حال رمزگذاری شدن است.";
+                    resultantBytes = transform.TransformFinalBlock(fileContent, 0, fileContent.Length);
+                    tbStatusUpdate.Text = "پرونده رمزگذاری شد.";
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(" آیا مطمئن هستید که این پرونده درست است؟" + e.Message, "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                    return;
+                }
+                
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                string fileExtension = System.IO.Path.GetExtension(tbFilePath.Text);
+                saveFileDialog.Filter = $"فایل ها (*{fileExtension}) | *{fileExtension}";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    tbStatusUpdate.Text = "پرونده در حال ذخیره شدن است.";
+                    File.WriteAllBytes(saveFileDialog.FileName, resultantBytes);
+                    tbStatusUpdate.Text = "پرونده ذخیره شد. تمام ";
+                }
+                else
+                {
+                    MessageBox.Show("پرونده ذخیره نشد", "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                    tbStatusUpdate.Text = "پرونده ذخیره نشد!";
+                    return;
+                }
+            });
+        }
+        void aesDecrypt()
+        {
+            this.Dispatcher.Invoke(() =>
             {
 
-                File.WriteAllBytes(saveFileDialog.FileName, resultantBytes);
-            }
-            else
-            {
-                MessageBox.Show(".پرونده ذخیره نشد");
-                return;
-            }
+                byte[] fileContent;
+                try
+                {
+                    tbStatusUpdate.Text = "پرونده در حال خوانده شدن است.";
+                    fileContent = File.ReadAllBytes(tbFilePath.Text);
+                    tbStatusUpdate.Text = "پرونده خوانده شد.";
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("پرونده ممکن است در حال استفاده باشد. برنامه ای را که از آن استفاده می کند ببندید و دوباره امتحان کنید" + e.Message, "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                    return;
+                }
+
+                AesCryptoServiceProvider aesProvider = new AesCryptoServiceProvider();
+                aesProvider.BlockSize = 128;
+                aesProvider.KeySize = 256;
+
+                aesProvider.IV = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pwbInitializationVector.Password)).Take(16).ToArray();
+                aesProvider.Key = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(pwbPassword.Password));
+                aesProvider.Mode = CipherMode.CBC;
+                aesProvider.Padding = PaddingMode.PKCS7;
+
+                byte[] resultantBytes;
+                ICryptoTransform transform = aesProvider.CreateDecryptor(aesProvider.Key, aesProvider.IV);
+                try
+                {
+                    tbStatusUpdate.Text = "پرونده در حال رمزگشایی شدن است.";
+                    resultantBytes = transform.TransformFinalBlock(fileContent, 0, fileContent.Length);
+                    tbStatusUpdate.Text = "پرونده رمزگشایی شد.";
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("آیا مطمئن هستید که این پرونده درست است؟ اندازه پرونده مطابقت ندارد یا پرونده خراب شده است" + e.Message, "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                    tbStatusUpdate.Text = "آیا مطمئن هستید که این پرونده درست است؟ اندازه پرونده مطابقت ندارد یا پرونده خراب شده است.";
+                    return;
+                }
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                string fileExtension = System.IO.Path.GetExtension(tbFilePath.Text);
+                saveFileDialog.Filter = $"فایل ها (*{fileExtension}) | *{fileExtension}";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    tbStatusUpdate.Text = "پرونده در حال ذخیره شدن است.";
+                    File.WriteAllBytes(saveFileDialog.FileName, resultantBytes);
+                    tbStatusUpdate.Text = "پرونده ذخیره شد. تمام ";
+                }
+                else
+                {
+                    MessageBox.Show("پرونده ذخیره نشد", "پیام", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK, MessageBoxOptions.RtlReading);
+                    tbStatusUpdate.Text = "پرونده ذخیره نشد!";
+                    return;
+                }
+            });
         }
 
     }

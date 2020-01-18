@@ -12,7 +12,7 @@
                 <TextBlock Text="پرونده"  FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Border>
             <Border Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" >
-                <TextBox x:Name="tbFilePath" Width="200"  HorizontalAlignment="Right" VerticalAlignment="Center" Padding="3" FlowDirection="RightToLeft"/>
+                <TextBox x:Name="tbFilePath" Width="200"  HorizontalAlignment="Right" VerticalAlignment="Center" Padding="3" FlowDirection="LeftToRight"/>
             </Border>
             <Button x:Name="btBrowseFile" Style="{StaticResource generalButton}" Content="..." BorderBrush="Red" Click="btBrowseFile_Click"/>
             <Button x:Name="btCompressFile" Style="{StaticResource generalButton}" Content="فشرده کن" BorderBrush="Red" Click="btCompressFile_Click"/>
@@ -22,32 +22,34 @@
                 <TextBlock Text="پوشه"  FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
             </Border>
             <Border Width="200" Height="50" HorizontalAlignment="Right" VerticalAlignment="Top" >
-                <TextBox x:Name="tbFolderPath" Width="200"  HorizontalAlignment="Right" VerticalAlignment="Center" Padding="3" FlowDirection="RightToLeft"/>
+                <TextBox x:Name="tbFolderPath" Width="200"  HorizontalAlignment="Right" VerticalAlignment="Center" Padding="3" FlowDirection="LeftToRight"/>
             </Border>
             <Button x:Name="btBrowseFolder" Style="{StaticResource generalButton}" Content="..." BorderBrush="Red" Click="btBrowseFolder_Click"/>
             <Button x:Name="btCompressFolder" Style="{StaticResource generalButton}" Content="فشرده کن" BorderBrush="Red" Click="btCompressFolder_Click"/>
         </StackPanel>
-        <ProgressBar x:Name="pbCompressingFiles" Width="400" Height="20" Value="50" HorizontalAlignment="Left">
-            <ProgressBar.Foreground>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="1">
-                    <GradientStop Color="Green" Offset="0.0" />
-                    <GradientStop Color="Green" Offset="0.33" />
-                    <GradientStop Color="Red" Offset="0.34" />
-                    <GradientStop Color="Red" Offset="0.66" />
-                    <GradientStop Color="Black" Offset="0.67" />
-                    <GradientStop Color="Black" Offset="1" />
-                </LinearGradientBrush>
-            </ProgressBar.Foreground>
-            <ProgressBar.Background>
-                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.15">
-                    <GradientStop Color="Green" Offset="0.0" />
-                    <GradientStop Color="Green" Offset="0.33" />
-                    <GradientStop Color="Red" Offset="0.34" />
-                    <GradientStop Color="Red" Offset="0.66" />
-                    <GradientStop Color="Black" Offset="0.67" />
-                    <GradientStop Color="Black" Offset="1" />
-                </LinearGradientBrush>
-            </ProgressBar.Background>
-        </ProgressBar>
+        <Border Margin="120,30,260,0">
+            <ProgressBar x:Name="pbCompressingFiles" Width="370" Height="20" Value="0" Padding="0,0,100,0" HorizontalAlignment="Left">
+                <ProgressBar.Foreground>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="1">
+                        <GradientStop Color="Green" Offset="0.0" />
+                        <GradientStop Color="Green" Offset="0.33" />
+                        <GradientStop Color="Red" Offset="0.34" />
+                        <GradientStop Color="Red" Offset="0.66" />
+                        <GradientStop Color="Black" Offset="0.67" />
+                        <GradientStop Color="Black" Offset="1" />
+                    </LinearGradientBrush>
+                </ProgressBar.Foreground>
+                <ProgressBar.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" Opacity="0.15">
+                        <GradientStop Color="Green" Offset="0.0" />
+                        <GradientStop Color="Green" Offset="0.33" />
+                        <GradientStop Color="Red" Offset="0.34" />
+                        <GradientStop Color="Red" Offset="0.66" />
+                        <GradientStop Color="Black" Offset="0.67" />
+                        <GradientStop Color="Black" Offset="1" />
+                    </LinearGradientBrush>
+                </ProgressBar.Background>
+            </ProgressBar>
+        </Border>
     </StackPanel>
 </UserControl>

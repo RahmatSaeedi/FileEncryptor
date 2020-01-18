@@ -9,6 +9,7 @@
         Icon="icon.ico"
         mc:Ignorable="d"
         MouseDown="WindowDrag_MouseDown"
+        WindowStartupLocation="CenterScreen"
         Title="رمزگذار" Height="450" Width="800" AllowsTransparency="True" WindowStyle="None">
     <Window.Background>
         <SolidColorBrush Color="#EEFFEE" Opacity="1"/>

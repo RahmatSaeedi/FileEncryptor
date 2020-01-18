@@ -11,9 +11,23 @@
     <RootNamespace>fileEncryptor</RootNamespace>
     <SignAssembly>false</SignAssembly>
     <DelaySign>true</DelaySign>
+    <PackageProjectUrl>https://github.com/RahmatSaeedi/fileEncryptor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/RahmatSaeedi/fileEncryptor</RepositoryUrl>
+    <PackageTags>v1.0</PackageTags>
+    <NeutralLanguage />
+    <Copyright></Copyright>
+    <Authors>Rahmat Saeedi</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Description>Encrypt any file with AES 256, and can compress files and folders in a zip file.
+
+می توانید هر پرونده را با AES 256 رمزگذاری کنید ، و می تواند فایل ها و پوشه ها را در یک پرونده .zip فشرده سازی کند.</Description>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetZip" Version="1.13.5" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />

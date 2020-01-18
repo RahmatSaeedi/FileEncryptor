@@ -25,7 +25,7 @@ namespace fileEncryptor
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ArchieveViewModel();
+            DataContext = new CryptAFileViewModel();
         }
 
         private void Close(object sender, RoutedEventArgs e)

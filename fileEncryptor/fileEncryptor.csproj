@@ -11,16 +11,16 @@
     <RootNamespace>fileEncryptor</RootNamespace>
     <SignAssembly>false</SignAssembly>
     <DelaySign>true</DelaySign>
-    <PackageProjectUrl>https://github.com/RahmatSaeedi/fileEncryptor</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/RahmatSaeedi/fileEncryptor</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/RahmatSaeedi/FileEncryptor</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/RahmatSaeedi/FileEncryptor</RepositoryUrl>
     <PackageTags>v1.0</PackageTags>
     <NeutralLanguage />
     <Copyright></Copyright>
     <Authors>Rahmat Saeedi</Authors>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Description>Encrypt any file with AES 256, and can compress files and folders in a zip file.
+    <Description>هر پرونده ای  را با (رمزگذاری پیشرفته استاندارد 256) رمزگذاری کنید، و  فایل ها و پوشه ها را در یک پرونده (زیپ فایل) فشرده سازید.
 
-می توانید هر پرونده را با AES 256 رمزگذاری کنید ، و می تواند فایل ها و پوشه ها را در یک پرونده .zip فشرده سازی کند.</Description>
+Encrypt any file with AES 256, and compress files and folders to a zip file.</Description>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="icon.ico" />

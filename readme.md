@@ -6,6 +6,8 @@
 
 
 [دات نت کور۳.۱.۰](https://dotnet.microsoft.com/download)
+
+
 [بخش انتشار](https://github.com/RahmatSaeedi/FileEncryptor/releases/)
 
 ## fileEncryptor

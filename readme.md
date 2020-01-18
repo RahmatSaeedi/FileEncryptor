@@ -13,7 +13,7 @@
 ## fileEncryptor
 This WPF application can encrypt / decrypt files using AES 256, and it is also able to zip files and folders.
 
-`` Plain
+``
 Encrypt any file with AES 256, and compress files and folders to a zip file.
 ``
 # Howto
